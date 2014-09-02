@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB762C8819B6328900857A62 /* HMBasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = BB762C8719B6328900857A62 /* HMBasicAnimation.m */; };
+		BB762C8F19B64CA300857A62 /* HMGrandCentralDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = BB762C8E19B64CA300857A62 /* HMGrandCentralDispatch.m */; };
 		BBA7647419A5232D00C642B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA7647319A5232D00C642B9 /* Foundation.framework */; };
 		BBA7647619A5232D00C642B9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA7647519A5232D00C642B9 /* CoreGraphics.framework */; };
 		BBA7647819A5232D00C642B9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA7647719A5232D00C642B9 /* UIKit.framework */; };
@@ -36,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB762C8619B6328900857A62 /* HMBasicAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMBasicAnimation.h; sourceTree = "<group>"; };
+		BB762C8719B6328900857A62 /* HMBasicAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMBasicAnimation.m; sourceTree = "<group>"; };
+		BB762C8D19B64CA300857A62 /* HMGrandCentralDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMGrandCentralDispatch.h; sourceTree = "<group>"; };
+		BB762C8E19B64CA300857A62 /* HMGrandCentralDispatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMGrandCentralDispatch.m; sourceTree = "<group>"; };
 		BBA7647019A5232D00C642B9 /* HMSideDrawerDirectionalExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HMSideDrawerDirectionalExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBA7647319A5232D00C642B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BBA7647519A5232D00C642B9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -85,6 +91,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB762C8519B6314700857A62 /* HMBasicAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				BB762C8619B6328900857A62 /* HMBasicAnimation.h */,
+				BB762C8719B6328900857A62 /* HMBasicAnimation.m */,
+			);
+			name = HMBasicAnimation;
+			sourceTree = "<group>";
+		};
+		BB762C8919B64B6900857A62 /* HMGrandCentralDispatch */ = {
+			isa = PBXGroup;
+			children = (
+				BB762C8D19B64CA300857A62 /* HMGrandCentralDispatch.h */,
+				BB762C8E19B64CA300857A62 /* HMGrandCentralDispatch.m */,
+			);
+			name = HMGrandCentralDispatch;
+			sourceTree = "<group>";
+		};
 		BBA7646719A5232D00C642B9 = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +142,6 @@
 		BBA7647919A5232D00C642B9 /* HMSideDrawerDirectionalExample */ = {
 			isa = PBXGroup;
 			children = (
-				BBA764A919A5235000C642B9 /* HMSideDrawerDirectional */,
 				BBA7648219A5232D00C642B9 /* AppDelegate.h */,
 				BBA7648319A5232D00C642B9 /* AppDelegate.m */,
 				BBA7648519A5232D00C642B9 /* Main.storyboard */,
@@ -135,6 +158,9 @@
 		BBA7647A19A5232D00C642B9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BB762C8919B64B6900857A62 /* HMGrandCentralDispatch */,
+				BB762C8519B6314700857A62 /* HMBasicAnimation */,
+				BBA764A919A5235000C642B9 /* HMSideDrawerDirectional */,
 				BBA7647B19A5232D00C642B9 /* HMSideDrawerDirectionalExample-Info.plist */,
 				BBA7647C19A5232D00C642B9 /* InfoPlist.strings */,
 				BBA7647F19A5232D00C642B9 /* main.m */,
@@ -267,11 +293,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB762C8819B6328900857A62 /* HMBasicAnimation.m in Sources */,
 				BBA7648A19A5232D00C642B9 /* ViewController.m in Sources */,
 				BBA764B219A5247400C642B9 /* SideDrawerViewController.m in Sources */,
 				BBA7648419A5232D00C642B9 /* AppDelegate.m in Sources */,
 				BBA7648019A5232D00C642B9 /* main.m in Sources */,
 				BBA764AF19A5237100C642B9 /* HMSideDrawerDirectional.m in Sources */,
+				BB762C8F19B64CA300857A62 /* HMGrandCentralDispatch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

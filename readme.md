@@ -13,17 +13,21 @@ Its a static class so if you need multiple youd have to duplicate it under a dif
 
 ```objective-c
 
-  // in your storyboard add a view controller with a specific ID for example "SideDrawerViewControllerId"
+  // in the main storyboard, add a view controller with a specific ID for example "SideDrawerViewControllerId"
+
+  // the UIViewController linked to by "SideDrawerViewControllerId" should implement the <HMSideDrawerDirectionalDelegate> protocol
+  @interface SideDrawerViewController () <HMSideDrawerDirectionalDelegate>
 
   // application:didFinishLaunchingWithOptions:
   UIStoryboard* storyboard = self.window.rootViewController.storyboard; // ref to main storyboard
     UIViewController* sideDrawerViewController = [storyboard instantiateViewControllerWithIdentifier:@"SideDrawerViewControllerId"]; // id of the side view controller to me used
     [HMSideDrawerDirectional initWithWindow:self.window // window for size
                          withViewController:sideDrawerViewController // which view controller to reveal
-                            withShrinkScale:0.8 // how much to shrink
-                      withShowAnimationTime:1.0 // seconds to animate to reveal
-                      withHideAnimationTime:0.5 // seconds to animate when hiding
-                              withDirection:SIDE_DRAWER_DIRECTION_RIGHT]; // direction of hiding the view to reveal the side menu
+                            withShrinkScale:HMSideDrawerDirectional_DEFAULT_SCALE // how much to shrink
+                      withShowAnimationTime:HMSideDrawerDirectional_DEFAULT_DURATION_SHOW // seconds to animate to reveal
+                      withHideAnimationTime:HMSideDrawerDirectional_DEFAULT_DURATION_HIDE // seconds to animate when hiding
+                   withRotationDegreesAngle:HMSideDrawerDirectional_DEFAULT_DEGREE // degrees to rotate the view
+                              withDirection:HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT]; // direction of hiding the view to reveal the side menu
 
   // set the delegate and show
   [HMSideDrawerDirectional delegate:self];

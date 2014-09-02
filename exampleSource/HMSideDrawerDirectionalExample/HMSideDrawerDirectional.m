@@ -4,28 +4,31 @@
 //
 
 #import "HMSideDrawerDirectional.h"
+#import "HMBasicAnimation.h"
 
 UIViewController* sideViewController;
 UIViewController* currentViewController;
 UIButton* closeButton;
 UIWindow* window;
 CGFloat shrinkScale;
+CGFloat rotationDegreesAngle;
 NSTimeInterval showAnimationTime;
 NSTimeInterval hideAnimationTime;
 BOOL isShown;
 int direction;
-id<HMSideDrawerDirectionalDelegate> _delegate;
+UIViewController <HMSideDrawerDirectionalDelegate>* _delegate;
+UIViewController <HMSideDrawerDirectionalDelegate>* delegateSideDrawer;
 
 @implementation HMSideDrawerDirectional
 
 #pragma mark : accessors
 
-+ (id<HMSideDrawerDirectionalDelegate>)delegate
++ (UIViewController<HMSideDrawerDirectionalDelegate>*)delegate
 {
     return _delegate;
 }
 
-+ (void)delegate:(id<HMSideDrawerDirectionalDelegate>)delegate
++ (void)delegate:(UIViewController<HMSideDrawerDirectionalDelegate>*)delegate
 {
     _delegate = delegate;
 }
@@ -33,10 +36,11 @@ id<HMSideDrawerDirectionalDelegate> _delegate;
 #pragma mark : initialization
 
 + (void)initWithWindow:(UIWindow*)withWindow
-       withViewController:(UIViewController*)withViewController
+       withViewController:(UIViewController <HMSideDrawerDirectionalDelegate>*)withViewController
           withShrinkScale:(CGFloat)withShrinkScale
     withShowAnimationTime:(NSTimeInterval)withShowAnimationTime
     withHideAnimationTime:(NSTimeInterval)withHideAnimationTime
+ withRotationDegreesAngle:(CGFloat)withRotationDegreesAngle
             withDirection:(int)withDirection
 {
     window = withWindow;
@@ -44,7 +48,11 @@ id<HMSideDrawerDirectionalDelegate> _delegate;
     shrinkScale = withShrinkScale;
     showAnimationTime = withShowAnimationTime;
     hideAnimationTime = withHideAnimationTime;
+    rotationDegreesAngle = withRotationDegreesAngle;
     direction = withDirection;
+    
+    // delegate for the side drawer
+    delegateSideDrawer = withViewController;
 }
 
 + (void)initCloseButtonToViewController:(UIViewController*)toViewController
@@ -62,8 +70,16 @@ id<HMSideDrawerDirectionalDelegate> _delegate;
 + (void)hideSideDrawer
 {
     if (isShown) {
+        
+        // delegate calls
+        [[self delegate]    sideDrawerWillHideWithAnimationTime:hideAnimationTime];
+        [delegateSideDrawer sideDrawerWillHideWithAnimationTime:hideAnimationTime];
+        
+        [[self delegate]    performSelector:@selector(sideDrawerDidHide) withObject:nil afterDelay:showAnimationTime];
+        [delegateSideDrawer performSelector:@selector(sideDrawerDidHide) withObject:nil afterDelay:showAnimationTime];
+        
         CGSize windowSize = window.frame.size;
-        [[self delegate] sideDrawerWillHideWithAnimationTime:hideAnimationTime];
+        
         // remove the button
         [closeButton removeFromSuperview];
         [UIView animateWithDuration:hideAnimationTime animations:^{
@@ -72,9 +88,9 @@ id<HMSideDrawerDirectionalDelegate> _delegate;
             currentViewController.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1); // grow back to full scale
         } completion:^(BOOL finished) {
             if (finished) {
+                [window addSubview:currentViewController.view]; // set the view back on the window since for the animation it was set to the sideMenu viewControllers view
                 [sideViewController.view removeFromSuperview]; // remove the side view from the window
                 currentViewController = nil; // stop holding onto the presented view
-                [[self delegate] sideDrawerDidHide];
             }
         }];
         isShown = NO;
@@ -85,33 +101,39 @@ id<HMSideDrawerDirectionalDelegate> _delegate;
 {
     // show sub view controller on the side
     if (!isShown) {
-        CGSize windowSize = window.frame.size;
-        [[self delegate] sideDrawerWillAppearWithAnimationTime:showAnimationTime];
+        
         currentViewController = fromViewController; // hold onto the presented view to remove when hiding
+        
+        CGSize windowSize = window.frame.size;
+        UIView* view      = currentViewController.view;
+        CALayer* layer    = view.layer;
+        
         [window addSubview:sideViewController.view]; // add the side view
-        [window bringSubviewToFront:currentViewController.view]; // bring the presented view on top
-        [UIView animateWithDuration:showAnimationTime animations:^{
-            // animate view to the side and resize
-            switch (direction) {
-                case SIDE_DRAWER_DIRECTION_RIGHT:
-                    currentViewController.view.center = CGPointMake(windowSize.width, windowSize.height/2);
-                    break;
-                case SIDE_DRAWER_DIRECTION_LEFT:
-                    currentViewController.view.center = CGPointMake(0, windowSize.height/2);
-                    break;
-                default:
-                    break;
-            }
-            currentViewController.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, shrinkScale, shrinkScale);
-        } completion:^(BOOL finished) {
-            if (finished) {
-                // add button covering entire view so when tapped can return
-                [self initCloseButtonToViewController:currentViewController];
-                [window addSubview:closeButton];
-                [[self delegate] sideDrawerDidAppear];
-            }
-        }];
+        [sideViewController.view addSubview:currentViewController.view];// add the preview view on the menu view
+        [currentViewController.view.superview bringSubviewToFront:currentViewController.view]; // bring the presented view on top
+        
+        // add button covering entire view so when tapped can return
+        [self initCloseButtonToViewController:currentViewController];
+        [currentViewController.view addSubview:closeButton];
+        
+        // animation references
+
+        CGFloat delaySeconds = 0;
+        CGFloat directionMultiplier = direction == HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT ? 1 : -1;
+        if (rotationDegreesAngle != HMSideDrawerDirectional_DEGREE_NONE)
+            [HMBasicAnimation doRotate3DAnimation:layer toDegreeAngle:directionMultiplier * rotationDegreesAngle    duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_ROTATION_Y];
+        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                                      duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_X];
+        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                                      duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_Y];
+        [HMBasicAnimation doAnimation:layer             toValue:@(directionMultiplier * windowSize.width / 2)       duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_TRANSLATION_X];
+        
         isShown = YES;
+        
+        // delegate calls
+        [[self delegate]    sideDrawerWillAppearWithAnimationTime:showAnimationTime];
+        [delegateSideDrawer sideDrawerWillAppearWithAnimationTime:showAnimationTime];
+        
+        [[self delegate]    performSelector:@selector(sideDrawerDidAppear) withObject:nil afterDelay:showAnimationTime];
+        [delegateSideDrawer performSelector:@selector(sideDrawerDidAppear) withObject:nil afterDelay:showAnimationTime];
     } else {
         [self hideSideDrawer];
     }

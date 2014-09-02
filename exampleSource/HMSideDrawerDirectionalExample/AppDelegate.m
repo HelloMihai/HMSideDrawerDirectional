@@ -15,10 +15,11 @@
     UIViewController* sideDrawerViewController = [storyboard instantiateViewControllerWithIdentifier:@"SideDrawerViewControllerId"];
     [HMSideDrawerDirectional initWithWindow:self.window
                          withViewController:sideDrawerViewController
-                            withShrinkScale:1.0
-                      withShowAnimationTime:1.0
-                      withHideAnimationTime:0.5
-                              withDirection:SIDE_DRAWER_DIRECTION_RIGHT];
+                            withShrinkScale:HMSideDrawerDirectional_DEFAULT_SCALE
+                      withShowAnimationTime:HMSideDrawerDirectional_DEFAULT_DURATION_SHOW
+                      withHideAnimationTime:HMSideDrawerDirectional_DEFAULT_DURATION_HIDE
+                   withRotationDegreesAngle:HMSideDrawerDirectional_DEFAULT_DEGREE
+                              withDirection:HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT];
 
     // Override point for customization after application launch.
     return YES;
