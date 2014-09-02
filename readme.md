@@ -3,6 +3,8 @@
 This "side drawer" is directional and meant to be used with the storyboard view controllers.
 Its a static class so if you need multiple youd have to duplicate it under a different name but most apps use the same side menu so this works great.
 
+![HMSideDrawerDirectional](HMSideDrawerDirectionalExample3D.gif)
+
 ![HMSideDrawerDirectional](HMSideDrawerDirectionalExample.gif)
 
 ![HMSideDrawerDirectional](HMSideDrawerDirectionalExampleNoShrink.gif)
