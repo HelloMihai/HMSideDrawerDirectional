@@ -119,12 +119,11 @@ UIViewController <HMSideDrawerDirectionalDelegate>* delegateSideDrawer;
         // animation references
 
         CGFloat delaySeconds = 0;
-        CGFloat directionMultiplier = direction == HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT ? 1 : -1;
         if (rotationDegreesAngle != HMSideDrawerDirectional_DEGREE_NONE)
-            [HMBasicAnimation doRotate3DAnimation:layer toDegreeAngle:directionMultiplier * rotationDegreesAngle    duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_ROTATION_Y];
-        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                                      duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_X];
-        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                                      duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_Y];
-        [HMBasicAnimation doAnimation:layer             toValue:@(directionMultiplier * windowSize.width / 2)       duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_TRANSLATION_X];
+            [HMBasicAnimation doRotate3DAnimation:layer toDegreeAngle:direction * rotationDegreesAngle    duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_ROTATION_Y];
+        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                            duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_X];
+        [HMBasicAnimation doAnimation:layer             toValue:@(shrinkScale)                            duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_SCALE_Y];
+        [HMBasicAnimation doAnimation:layer             toValue:@(direction * windowSize.width / 2)       duration:showAnimationTime delaySeconds:delaySeconds keyPath:HMBasicAnimation_TRANSLATION_X];
         
         isShown = YES;
         

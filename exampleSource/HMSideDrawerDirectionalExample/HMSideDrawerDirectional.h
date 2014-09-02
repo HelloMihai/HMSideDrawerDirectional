@@ -14,8 +14,8 @@
 - (void)sideDrawerDidHide;
 @end
 
-static int const HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_LEFT  = 1;
-static int const HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT = 2;
+static int const HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_LEFT  = -1;
+static int const HMSideDrawerDirectional_SIDE_DRAWER_DIRECTION_RIGHT = 1;
 static float const HMSideDrawerDirectional_DEGREE_NONE               = 0; // no angle rotation is applied
 static float const HMSideDrawerDirectional_DEFAULT_DEGREE            = 25;
 static float const HMSideDrawerDirectional_DEFAULT_SCALE             = 0.75;
